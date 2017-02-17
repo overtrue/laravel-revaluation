@@ -22,12 +22,13 @@ Publish the config file:
 $ php artisan vendor:publish --provider='Overtrue\LaravelRevaluation\RevaluationServiceProvider'
 ```
 
-Finally, use HasRevaluableAttributes in model. And specify which attributes in the `$revaluable` property can be revalued:
+Finally, use `Overtrue\LaravelRevaluation\Traits\HasRevaluableAttributes` in model. And specify which attributes in the `$revaluable` property can be revalued:
 
 ```php
-...
+<?php
+
+use Illuminate\Database\Eloquent\Model;
 use Overtrue\LaravelRevaluation\Traits\HasRevaluableAttributes;
-...
 
 class Order extends Model
 {
@@ -36,6 +37,8 @@ class Order extends Model
     protected $revaluable = [
         'total', 'paid_in', 'postage',
     ];
+
+    //...
 }
 ```
 
