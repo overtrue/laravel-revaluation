@@ -1,0 +1,27 @@
+{
+    "name": "overtrue/laravel-revaluation",
+    "description": "Laravel 5 model revaluation helper.",
+    "require": {
+        "laravel/framework": "5.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "overtrue",
+            "email": "i@overtrue.me"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Overtrue\\LaravelRevaluation\\": "src/"
+        }
+    },
+    "autoload-dev": {
+      "psr-4": {
+          "Overtrue\\LaravelRevaluation\\Test\\": "tests"
+      }
+    }
+}
