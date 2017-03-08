@@ -16,7 +16,7 @@ namespace Overtrue\LaravelRevaluation\Valuators;
  */
 class RmbCent extends Valuator
 {
-    protected function inYuan()
+    public function inYuan()
     {
         return round($this->value / 100, 2);
     }
