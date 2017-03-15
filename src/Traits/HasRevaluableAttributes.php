@@ -26,7 +26,7 @@ trait HasRevaluableAttributes
     {
         if ($valuator = $this->getAttributeValuator($attribute)) {
             if (is_callable($valuator, 'storeableValue')) {
-                $value = call_user_func([new $valuator(), 'storeableValue'], $value);
+                $value = call_user_func([new $valuator($value), 'storeableValue'], $value);
             }
         }
 
