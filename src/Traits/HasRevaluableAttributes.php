@@ -17,6 +17,46 @@ namespace Overtrue\LaravelRevaluation\Traits;
 trait HasRevaluableAttributes
 {
     /**
+     * Fetch attribute.
+     *
+     * @param string $method
+     *
+     * @return mixed
+     */
+    public function __call($method, $args)
+    {
+        if (!starts_with($method, 'get')) {
+            return parent::__call($method, $args);
+        }
+
+        $attribute = substr($method, 3);
+
+        if ($valuator = $this->getValuator($attribute)) {
+            return $valuator;
+        }
+
+        return parent::__call($method, $args);
+    }
+
+    /**
+     * Return valuator of attribute.
+     *
+     * @param  string $attribute
+     *
+     * @return Overtrue\LaravelRevaluation\Revaluable
+     */
+    public function getValuator($attribute)
+    {
+        $attribute = snake_case($attribute);
+
+        if ($valuator = $this->getAttributeValuator($attribute)) {
+            return new $valuator($this->{$attribute}, $attribute, $this);
+        }
+
+        return false;
+    }
+
+    /**
      * Attribute mutator.
      *
      * @param string $attribute
@@ -34,25 +74,23 @@ trait HasRevaluableAttributes
     }
 
     /**
-     * Fetch attribute.
-     *
-     * @param string $attribute
-     *
-     * @return mixed
-     */
-    public function __get($attribute)
-    {
-        $value = parent::__get($attribute);
-
-        if ($valuator = $this->getAttributeValuator($attribute)) {
-            return new $valuator($value, $attribute, $this);
-        }
-
-        return $value;
-    }
-
-    /**
      * Return revaluable attributes.
+     *
+     * @example
+     *
+     * <pre>
+     * // 1. Using default valuator:
+     * protected $revaluable = [
+     *     'foo', 'bar', 'baz'
+     * ];
+     *
+     * // 2. Use the specified valuator:
+     * protected $revaluable = [
+     *     'foo' => '\Foo\Support\Valuator\Foo',
+     *     'bar' => '\Foo\Support\Valuator\Bar',
+     *     'baz',
+     * ];
+     * </pre>
      *
      * @return array
      */
@@ -73,18 +111,6 @@ trait HasRevaluableAttributes
         }
 
         return $revaluable;
-    }
-
-    /**
-     * Wether the given attribute is revaluable.
-     *
-     * @param string $attribute
-     *
-     * @return bool
-     */
-    protected function isRevaluableAttribute($attribute)
-    {
-        return in_array($attribute, $this->getRevaluableAttributes(), true);
     }
 
     /**
