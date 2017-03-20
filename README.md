@@ -59,3 +59,7 @@ $order->save();
 $order->total;                      // 12300
 $order->getTotal()->asCurrency();   // ￥123.00
 ```
+
+## License
+
+MIT
