@@ -44,4 +44,18 @@ class Order extends Model
 
 ## Usage
 
-TODO
+```php
+$order = Order::find(1);
+
+$order->total;                      // 34500
+$order->getTotal()                  // Overtrue\LaravelRevaluation\Valuators\RmbCent
+$order->getTotal()->inYuan();       // 345.00
+$order->getTotal()->asCurrency();   // ￥345.00
+
+// automatic setter.
+$order->total = 123;
+$order->save();
+
+$order->total;                      // 12300
+$order->getTotal()->asCurrency();   // ￥123.00
+```
