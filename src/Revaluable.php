@@ -18,5 +18,26 @@ use JsonSerializable;
  */
 interface Revaluable extends JsonSerializable
 {
+    /**
+     * Translate to the default format.
+     *
+     * @return mixed
+     */
+    public function toDefaultFormat();
+
+    /**
+     * Get raw value
+     *
+     * @return mixed
+     */
     public function getValue();
+
+    /**
+     * Return storable value.
+     *
+     * @param  mixed $value
+     *
+     * @return mixed
+     */
+    public static function toStorableValue($value);
 }

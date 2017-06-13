@@ -35,8 +35,18 @@ class Valuator implements Revaluable
         return $this->value;
     }
 
+    public function toDefaultFormat()
+    {
+        return $this->value;
+    }
+
     public function __toString()
     {
         return $this->getValue();
+    }
+
+    public static function toStorableValue($value)
+    {
+        return $value;
     }
 }

@@ -16,18 +16,23 @@ namespace Overtrue\LaravelRevaluation\Valuators;
  */
 class RmbCent extends Valuator
 {
+    public function toDefaultFormat()
+    {
+        return $this->inYuan();
+    }
+
     public function inYuan()
     {
         return round($this->value / 100, 2);
     }
 
-    public function storeableValue($value)
-    {
-        return $value * 100;
-    }
-
     public function asCurrency($format = '￥%i')
     {
         return money_format($format, $this->inYuan());
+    }
+
+    public static function toStorableValue($value)
+    {
+        return $value * 100;
     }
 }
