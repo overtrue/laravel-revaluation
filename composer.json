@@ -23,5 +23,12 @@
       "psr-4": {
           "Overtrue\\LaravelRevaluation\\Test\\": "tests"
       }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Overtrue\\LaravelRevaluation\\RevaluationServiceProvider"
+            ]
+        }
     }
 }
