@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the overtrue/laravel-revaluationable.
+ * This file is part of the overtrue/laravel-revaluation.
  *
  * (c) overtrue <i@overtrue.me>
  *
@@ -26,7 +26,7 @@ interface Revaluable extends JsonSerializable
     public function toDefaultFormat();
 
     /**
-     * Get raw value
+     * Get raw value.
      *
      * @return mixed
      */
@@ -35,7 +35,7 @@ interface Revaluable extends JsonSerializable
     /**
      * Return storable value.
      *
-     * @param  mixed $value
+     * @param mixed $value
      *
      * @return mixed
      */

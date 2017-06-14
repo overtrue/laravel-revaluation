@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the overtrue/laravel-revaluationable.
+ * This file is part of the overtrue/laravel-revaluation.
  *
  * (c) overtrue <i@overtrue.me>
  *
@@ -21,19 +21,21 @@ trait HasRevaluableAttributes
      */
     public static function bootHasRevaluableAttributes()
     {
-        static::saving(function($object){
-            foreach (array_keys($object->getRevaluableAttributes()) as $attribute) {
-                if ($object->isDirty($attribute)) {
-                    $object->$attribute = $object->getStorableValue($attribute);
+        static::registerModelEvent('booted', function () {
+            static::saving(function ($object) {
+                foreach (array_keys($object->getRevaluableAttributes()) as $attribute) {
+                    if ($object->isDirty($attribute)) {
+                        $object->$attribute = $object->getStorableValue($attribute);
+                    }
                 }
-            }
+            });
         });
     }
 
     /**
      * Return valuator instance of attribute.
      *
-     * @param  string $attribute
+     * @param string $attribute
      *
      * @return Overtrue\LaravelRevaluation\Revaluable
      */
@@ -98,7 +100,6 @@ trait HasRevaluableAttributes
         return property_exists($this, 'revaluateMutators') ? (array) $this->revaluateMutators : [];
     }
 
-
     /**
      * Fetch attribute.
      *
@@ -129,7 +130,7 @@ trait HasRevaluableAttributes
      * $object->raw_price;
      * </pre>
      *
-     * @param  string $attribute
+     * @param string $attribute
      *
      * @return mixed
      *
@@ -154,7 +155,8 @@ trait HasRevaluableAttributes
          * $revaluateMutators = [
          *     'display_price' => ['price', 'asCurrency'],
          * ];
-         * </pre>
+         * </pre>.
+         *
          * @var array
          */
         $revaluateMutators = $this->getRevaluateMutators();
@@ -176,7 +178,7 @@ trait HasRevaluableAttributes
     /**
      * Return revaluated value of attribute.
      *
-     * @param  string $attribute
+     * @param string $attribute
      *
      * @return mixed
      */

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the overtrue/laravel-revaluationable.
+ * This file is part of the overtrue/laravel-revaluation.
  *
  * (c) overtrue <i@overtrue.me>
  *
