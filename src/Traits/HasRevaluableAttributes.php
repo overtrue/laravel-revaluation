@@ -126,20 +126,27 @@ trait HasRevaluableAttributes
      * <pre>
      * $object->revaluated_price;
      * $object->revaluated_xxx;
+     * $object->raw_price;
      * </pre>
      *
      * @param  string $attribute
      *
      * @return mixed
+     *
+     * @throws \Exception
      */
     public function getAttribute($attribute)
     {
-        if ($valuator = $this->getRevaluatedAttribute($attribute)) {
-            return $valuator->toDefaultFormat();
+        if (starts_with($attribute, 'raw_')) {
+            return $this->getRevaluatedAttribute(substr($attribute, strlen('raw_')))->getRaw();
         }
 
         if (starts_with($attribute, 'revaluated_')) {
             return $this->getRevaluatedAttribute(substr($attribute, strlen('revaluated_')));
+        }
+
+        if ($valuator = $this->getRevaluatedAttribute($attribute)) {
+            return $valuator->toDefaultFormat();
         }
 
         /**

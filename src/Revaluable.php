@@ -30,7 +30,7 @@ interface Revaluable extends JsonSerializable
      *
      * @return mixed
      */
-    public function getValue();
+    public function getRaw();
 
     /**
      * Return storable value.

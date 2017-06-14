@@ -30,7 +30,7 @@ class Valuator implements Revaluable
         return $this->getValue();
     }
 
-    public function getValue()
+    public function getRaw()
     {
         return $this->value;
     }
