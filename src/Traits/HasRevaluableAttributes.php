@@ -17,19 +17,38 @@ namespace Overtrue\LaravelRevaluation\Traits;
 trait HasRevaluableAttributes
 {
     /**
-     * Register hook to translate the attribute value to storable value.
+     * Revaluated attributes.
+     *
+     * @var array
      */
-    public static function bootHasRevaluableAttributes()
+    protected $revaluated;
+
+    /**
+     * @param string $attribute
+     * @param bool   $all
+     *
+     * @return bool
+     */
+    public function isRevaluated($attributes, $all = false)
     {
-        static::registerModelEvent('booted', function () {
-            static::saving(function ($object) {
-                foreach (array_keys($object->getRevaluableAttributes()) as $attribute) {
-                    if ($object->isDirty($attribute)) {
-                        $object->$attribute = $object->getStorableValue($attribute);
-                    }
-                }
-            });
-        });
+        $attributes = is_array($attributes)
+            ? $attributes : func_get_args();
+
+        $intersect = array_intersect($this->revaluated, $attributes);
+
+        if ($all) {
+            return count(array_diff($intersect, $attributes)) === 0;
+        }
+
+        return count($intersect) > 0;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRevaluated()
+    {
+        return $this->revaluated;
     }
 
     /**
@@ -126,7 +145,6 @@ trait HasRevaluableAttributes
      * @example
      * <pre>
      * $object->revaluated_price;
-     * $object->revaluated_xxx;
      * $object->raw_price;
      * </pre>
      *
@@ -176,6 +194,24 @@ trait HasRevaluableAttributes
     }
 
     /**
+     * Set attribute.
+     *
+     * @param string $attribute
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function setAttribute($attribute, $value)
+    {
+        if ($valuator = $this->getAttributeValuator($attribute)) {
+            $this->revaluated[] = $attribute;
+            $value = forward_static_call([$valuator, 'toStorableValue'], $value);
+        }
+
+        return parent::setAttribute($attribute, $value);
+    }
+
+    /**
      * Return revaluated value of attribute.
      *
      * @param string $attribute
@@ -184,11 +220,9 @@ trait HasRevaluableAttributes
      */
     protected function getStorableValue($attribute)
     {
-        $value = parent::getAttribute($attribute);
-
         if ($valuator = $this->getAttributeValuator($attribute)) {
             if (is_callable($valuator, 'toStorableValue')) {
-                $value = forward_static_call([$valuator, 'toStorableValue'], $value);
+                $value = forward_static_call([$valuator, 'toStorableValue'], $this->attributes[$attribute]);
             }
         }
 

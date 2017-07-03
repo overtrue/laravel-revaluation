@@ -33,10 +33,18 @@ use Overtrue\LaravelRevaluation\Traits\HasRevaluableAttributes;
 class Order extends Model
 {
     use HasRevaluableAttributes;
-
+    
+    // 1. Use the default valuator.
     protected $revaluable = [
         'total', 'paid_in', 'postage',
     ];
+    
+    // 2. Use the specified valuator:
+    // protected $revaluable = [
+    //    'foo' => '\Foo\Support\Valuator\Foo',
+    //    'bar' => '\Foo\Support\Valuator\Bar',
+    //    'baz',  // default valuator
+    //];
 
     //...
 }
