@@ -99,7 +99,7 @@ trait HasRevaluableAttributes
         $revaluable = [];
 
         foreach ($this->revaluable as $key => $valuator) {
-            if (is_integer($key)) {
+            if (is_int($key)) {
                 $revaluable[$valuator] = config('revaluation.default_valuator');
             } else {
                 $revaluable[$valuator] = $valuator;
