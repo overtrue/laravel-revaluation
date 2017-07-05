@@ -1,5 +1,16 @@
-# Laravel 5 model revaluation helper.
+<h1 align="center">Laravel Revaluation</h1>
 
+<p align="center">Laravel 5 model revaluation helper.</p>
+
+<p align="center">
+<a href="https://travis-ci.org/overtrue/laravel-revaluation"><img src="https://travis-ci.org/overtrue/laravel-revaluation.svg?branch=master" alt="Build Status"></a>
+<a href="https://packagist.org/packages/overtrue/laravel-revaluation"><img src="https://poser.pugx.org/overtrue/laravel-revaluation/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/overtrue/laravel-revaluation"><img src="https://poser.pugx.org/overtrue/laravel-revaluation/v/unstable.svg" alt="Latest Unstable Version"></a>
+<a href="https://scrutinizer-ci.com/g/overtrue/laravel-revaluation/?branch=master"><img src="https://scrutinizer-ci.com/g/overtrue/laravel-revaluation/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a>
+<a href="https://scrutinizer-ci.com/g/overtrue/laravel-revaluation/?branch=master"><img src="https://scrutinizer-ci.com/g/overtrue/laravel-revaluation/badges/coverage.png?b=master" alt="Code Coverage"></a>
+<a href="https://packagist.org/packages/overtrue/laravel-revaluation"><img src="https://poser.pugx.org/overtrue/laravel-revaluation/downloads" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/overtrue/laravel-revaluation"><img src="https://poser.pugx.org/overtrue/laravel-revaluation/license" alt="License"></a>
+</p>
 
 
 ## Installation
