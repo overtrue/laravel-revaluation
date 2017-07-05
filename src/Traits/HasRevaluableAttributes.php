@@ -24,15 +24,30 @@ trait HasRevaluableAttributes
     protected $revaluated;
 
     /**
-     * @param string $attribute
-     * @param bool   $all
+     * Revaluated attributes append to array.
+     *
+     * @var bool
+     */
+    protected $revaluatedToArray = true;
+
+    /**
+     * Prefix of revaluated attribute getter.
+     *
+     * <pre>
+     * $model->revaluated_price;
+     * </pre>
+     */
+    protected $revaluatedAttributePrefix = 'revaluated';
+
+    /**
+     * @param string|array $attributes
+     * @param bool         $all
      *
      * @return bool
      */
     public function isRevaluated($attributes, $all = false)
     {
-        $attributes = is_array($attributes)
-            ? $attributes : func_get_args();
+        $attributes = (array) $attributes;
 
         $intersect = array_intersect($this->revaluated, $attributes);
 
@@ -120,25 +135,11 @@ trait HasRevaluableAttributes
     }
 
     /**
-     * Fetch attribute.
-     *
-     * @example
-     * <pre>
-     * $object->getRevaluatedPriceAttribute();
-     * $object->getRevaluatedXXXAttribute();
-     * </pre>
-     *
-     * @param string $method
-     *
-     * @return mixed
+     * @return string
      */
-    public function __call($method, $args)
+    public function getRevaluableAttributePrefix()
     {
-        if (preg_match('/getRevaluated(?<attribute>\w+)Attribute/i', $method, $matches)) {
-            return $this->getRevaluatedAttribute($matches['attribute']);
-        }
-
-        return parent::__call($method, $args);
+        return $this->revaluatedAttributePrefix ?? 'revaluated';
     }
 
     /**
@@ -209,6 +210,55 @@ trait HasRevaluableAttributes
         }
 
         return parent::setAttribute($attribute, $value);
+    }
+
+    /**
+     * Override HasAttributes::attributesToArray.
+     *
+     * @return array
+     */
+    public function attributesToArray()
+    {
+        if (!$this->revaluatedToArray) {
+            foreach ($this->getRevaluableAttributes() as $attribute => $valuator) {
+                $this->append($this->getRevaluablePrefixedAttributeName($attribute));
+            }
+        }
+
+        parent::attributesToArray();
+    }
+
+    /**
+     * @param string $attribute
+     *
+     * @return string
+     */
+    public function getRevaluablePrefixedAttributeName($attribute)
+    {
+        return $this->getRevaluableAttributePrefix().'_'.$attribute;
+    }
+
+    /**
+     * Fetch attribute.
+     *
+     * @example
+     * <pre>
+     * $object->getRevaluatedPriceAttribute();
+     * $object->getRevaluatedXXXAttribute();
+     * </pre>
+     *
+     * @param string $method
+     *
+     * @return mixed
+     */
+    public function __call($method, $args)
+    {
+        $prefix = studly_case($this->getRevaluableAttributePrefix());
+        if (preg_match("/get{$prefix}(?<attribute>\\w+)Attribute/i", $method, $matches)) {
+            return $this->getRevaluatedAttribute($matches['attribute']);
+        }
+
+        return parent::__call($method, $args);
     }
 
     /**

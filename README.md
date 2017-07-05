@@ -33,6 +33,20 @@ use Overtrue\LaravelRevaluation\Traits\HasRevaluableAttributes;
 class Order extends Model
 {
     use HasRevaluableAttributes;
+            
+    /**
+     * Revaluated attributes append to array. 
+     */
+    protected $revaluatedToArray = true; // default
+    
+    /**
+     * Prefix of revaluated attribute getter.
+     * 
+     * <pre>
+     * $model->revaluated_price;
+     * </pre> 
+     */
+    protected $revaluatedAttributePrefix = 'revaluated';
     
     // 1. Use the default valuator.
     protected $revaluable = [
@@ -69,6 +83,7 @@ $order->save();
 $order->total;                      // 123
 $order->raw_total;                  // 12300
 $order->revaluated_total->asCurrency();   // ￥123.00
+
 ```
 
 ## License
