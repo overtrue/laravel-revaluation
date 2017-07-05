@@ -225,7 +225,7 @@ trait HasRevaluableAttributes
             }
         }
 
-        parent::attributesToArray();
+        return parent::attributesToArray();
     }
 
     /**
