@@ -70,7 +70,7 @@ class Order extends Model
 $order = Order::find(1);
 
 $order->total;                      // 345 (Db: 34500)
-$order->raw_total;                   // 3450
+$order->raw_total;                   // 34500
 
 $order->getRevaluatedTotalAttribute() or $order->revaluated_total; // Overtrue\LaravelRevaluation\Valuators\RmbCent
 $order->revaluated_total->inYuan();       // 345.00
