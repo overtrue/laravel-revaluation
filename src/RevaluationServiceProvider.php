@@ -29,5 +29,7 @@ class RevaluationServiceProvider extends ServiceProvider
     public function register()
     {
         setlocale(LC_MONETARY, config('app.locale'));
+
+        $this->mergeConfigFrom(__DIR__.'/config.php', 'revaluation');
     }
 }

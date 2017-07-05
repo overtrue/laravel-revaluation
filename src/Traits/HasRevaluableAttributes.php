@@ -17,61 +17,34 @@ namespace Overtrue\LaravelRevaluation\Traits;
 trait HasRevaluableAttributes
 {
     /**
-     * Revaluated attributes.
-     *
-     * @var array
-     */
-    protected $revaluated;
-
-    /**
      * Revaluated attributes append to array.
      *
      * @var bool
      */
-    protected $revaluatedToArray = true;
+    //protected $appendRevaluatedAttributesToArray = true;
+
+    /**
+     * @var bool
+     */
+    //protected $replaceRawAttributesToArray = false;
 
     /**
      * Prefix of revaluated attribute getter.
      *
      * <pre>
-     * $model->revaluated_price;
+     *      $model->revaluated_price;
      * </pre>
-     */
-    protected $revaluatedAttributePrefix = 'revaluated';
-
-    /**
-     * @param string|array $attributes
-     * @param bool         $all
      *
-     * @return bool
+     * @var string
      */
-    public function isRevaluated($attributes, $all = false)
-    {
-        $attributes = (array) $attributes;
-
-        $intersect = array_intersect($this->revaluated, $attributes);
-
-        if ($all) {
-            return count(array_diff($intersect, $attributes)) === 0;
-        }
-
-        return count($intersect) > 0;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRevaluated()
-    {
-        return $this->revaluated;
-    }
+    //protected $revaluatedAttributePrefix = 'revaluated';
 
     /**
      * Return valuator instance of attribute.
      *
      * @param string $attribute
      *
-     * @return Overtrue\LaravelRevaluation\Revaluable
+     * @return \Overtrue\LaravelRevaluation\Revaluable
      */
     public function getRevaluatedAttribute($attribute)
     {
@@ -139,7 +112,7 @@ trait HasRevaluableAttributes
      */
     public function getRevaluableAttributePrefix()
     {
-        return $this->revaluatedAttributePrefix ?? 'revaluated';
+        return rtrim($this->revaluatedAttributePrefix ?? 'revaluated', '_');
     }
 
     /**
@@ -161,8 +134,10 @@ trait HasRevaluableAttributes
             return $this->getRevaluatedAttribute(substr($attribute, strlen('raw_')))->getRaw();
         }
 
-        if (starts_with($attribute, 'revaluated_')) {
-            return $this->getRevaluatedAttribute(substr($attribute, strlen('revaluated_')));
+        $prefix = $this->getRevaluableAttributePrefix();
+
+        if (starts_with($attribute, $prefix)) {
+            return $this->getRevaluatedAttribute(substr($attribute, strlen($prefix) + 1));
         }
 
         if ($valuator = $this->getRevaluatedAttribute($attribute)) {
@@ -205,7 +180,6 @@ trait HasRevaluableAttributes
     public function setAttribute($attribute, $value)
     {
         if ($valuator = $this->getAttributeValuator($attribute)) {
-            $this->revaluated[] = $attribute;
             $value = forward_static_call([$valuator, 'toStorableValue'], $value);
         }
 
@@ -221,9 +195,12 @@ trait HasRevaluableAttributes
     {
         $attributes = parent::attributesToArray();
 
-        if (!$this->revaluatedToArray) {
-            foreach ($this->getRevaluableAttributes() as $attribute => $valuator) {
-                $attributes[$attribute] = $this->getRevaluatedAttribute($attribute)->toDefaultFormat();
+        if ($this->shouldAppendRevaluatedAttributesToArray()) {
+            foreach (array_keys($this->getRevaluableAttributes()) as $attribute) {
+                if ($valuator = $this->getRevaluatedAttribute($attribute)) {
+                    $attribute = $this->shouldReplaceRawAttributesToArray() ? $attribute : $this->getRevaluablePrefixedAttributeName($attribute);
+                    $attributes[$attribute] = $valuator->toDefaultFormat();
+                }
             }
         }
 
@@ -261,6 +238,22 @@ trait HasRevaluableAttributes
         }
 
         return parent::__call($method, $args);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function shouldAppendRevaluatedAttributesToArray()
+    {
+        return property_exists($this, 'appendRevaluatedAttributesToArray') ? $this->appendRevaluatedAttributesToArray : true;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function shouldReplaceRawAttributesToArray()
+    {
+        return property_exists($this, 'replaceRawAttributesToArray') ? $this->replaceRawAttributesToArray : false;
     }
 
     /**
