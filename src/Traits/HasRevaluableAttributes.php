@@ -219,13 +219,15 @@ trait HasRevaluableAttributes
      */
     public function attributesToArray()
     {
+        $attributes = parent::attributesToArray();
+
         if (!$this->revaluatedToArray) {
             foreach ($this->getRevaluableAttributes() as $attribute => $valuator) {
-                $this->append($this->getRevaluablePrefixedAttributeName($attribute));
+                $attributes[$attribute] = $this->getRevaluatedAttribute($attribute)->toDefaultFormat();
             }
         }
 
-        return parent::attributesToArray();
+        return $attributes;
     }
 
     /**
