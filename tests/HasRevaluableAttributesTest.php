@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the overtrue/laravel-revaluation.
+ *
+ * (c) overtrue <i@overtrue.me>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Overtrue\LaravelRevaluation\Tests;
 
 use Orchestra\Testbench\TestCase;
@@ -8,7 +17,7 @@ use Overtrue\LaravelRevaluation\RevaluationServiceProvider;
 use Overtrue\LaravelRevaluation\Valuators\RmbCent;
 
 /**
- * Class HasRevaluableAttributesTest
+ * Class HasRevaluableAttributesTest.
  *
  * @author overtrue <i@overtrue.me>
  */
@@ -35,9 +44,9 @@ class HasRevaluableAttributesTest extends TestCase
     {
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
         $app['config']['revaluation.default_valuator'] = RmbCent::class;
     }
