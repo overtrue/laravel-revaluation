@@ -76,6 +76,15 @@ class HasRevaluableAttributesTest extends TestCase
         $this->assertEquals(20, $order->postage);
         $this->assertEquals(120, $order->paid_in);
 
+        // increment/decrement
+        $order->increment('total', 100);
+        $this->assertEquals(20000, $order->getOriginal('total'));
+        $this->assertEquals(200, $order->total);
+
+        $order->decrement('total', 100);
+        $this->assertEquals(10000, $order->getOriginal('total'));
+        $this->assertEquals(100, $order->total);
+
         // toArray
         $array = $order->toArray();
 
