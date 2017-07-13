@@ -28,7 +28,7 @@ class RmbCent extends Valuator
 
     public function asCurrency($format = '￥%i')
     {
-        return money_format($format, $this->inYuan());
+        return money_format($format, abs($this->inYuan()));
     }
 
     public static function toStorableValue($value)

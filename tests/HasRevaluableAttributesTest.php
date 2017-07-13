@@ -95,6 +95,9 @@ class HasRevaluableAttributesTest extends TestCase
         $this->assertEquals(100, $array['revaluated_total']);
         $this->assertEquals(20, $array['revaluated_postage']);
         $this->assertEquals(120, $array['revaluated_paid_in']);
+
+        $order->postage = -100;
+        $this->assertEquals('￥100.00', $order->revaluated_postage->asCurrency());
     }
 
     public function testCustomPrefix()
