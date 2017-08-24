@@ -42,7 +42,7 @@ class Valuator implements Revaluable
 
     public function __toString()
     {
-        return $this->getValue();
+        return $this->toDefaultFormat();
     }
 
     public static function toStorableValue($value)
