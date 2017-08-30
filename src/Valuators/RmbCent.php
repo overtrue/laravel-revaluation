@@ -23,12 +23,12 @@ class RmbCent extends Valuator
 
     public function inYuan()
     {
-        return round($this->value / 100, 2);
+        return round($this->value / 100, config('revaluation.options.rmb.pricision'));
     }
 
-    public function asCurrency($format = '￥%i')
+    public function asCurrency($format = null)
     {
-        return money_format($format, abs($this->inYuan()));
+        return money_format($format ?? config('revaluation.options.rmb.currency_format'), abs($this->inYuan()));
     }
 
     public static function toStorableValue($value)

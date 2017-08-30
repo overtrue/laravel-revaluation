@@ -11,4 +11,11 @@
 
 return [
     'default_valuator' => Overtrue\LaravelRevaluation\Valuators\Valuator::class,
+
+    'options' => [
+        'rmb' => [
+            'pricision' => 2,
+            'currency_format' => '￥%i',
+        ],
+    ],
 ];
