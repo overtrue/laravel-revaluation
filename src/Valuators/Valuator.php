@@ -27,7 +27,7 @@ class Valuator implements Revaluable
 
     public function jsonSerialize()
     {
-        return $this->getValue();
+        return $this->toDefaultFormat();
     }
 
     public function getRaw()
