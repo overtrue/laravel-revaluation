@@ -130,6 +130,10 @@ trait HasRevaluableAttributes
      */
     public function getAttribute($attribute)
     {
+        if ($this->hasGetMutator($attribute)) {
+            return parent::getAttribute($attribute);
+        }
+
         if (starts_with($attribute, 'raw_')) {
             return $this->getRevaluatedAttribute(substr($attribute, strlen('raw_')))->getRaw();
         }
