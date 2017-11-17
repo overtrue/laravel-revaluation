@@ -90,7 +90,7 @@ trait HasRevaluableAttributes
             if (is_int($key)) {
                 $revaluable[$valuator] = config('revaluation.default_valuator');
             } else {
-                $revaluable[$valuator] = $valuator;
+                $revaluable[$key] = $valuator;
             }
         }
 
