@@ -33,6 +33,6 @@ class RmbCent extends Valuator
 
     public static function toStorableValue($value)
     {
-        return $value * 100;
+        return $value === null ? null : $value * 100;
     }
 }
