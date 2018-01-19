@@ -19,5 +19,6 @@ namespace Overtrue\LaravelRevaluation\Tests;
 class OrderWithReplaceToArray extends Order
 {
     protected $appendRevaluatedAttributesToArray = true;
+
     protected $replaceRawAttributesToArray = true;
 }
