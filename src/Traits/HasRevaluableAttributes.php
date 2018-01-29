@@ -191,6 +191,35 @@ trait HasRevaluableAttributes
     }
 
     /**
+     * Run the increment or decrement method on the model.
+     *
+     * @param  string  $column
+     * @param  int  $amount
+     * @param  array  $extra
+     * @param  string  $method
+     * @return int
+     */
+    protected function incrementOrDecrement($column, $amount, $extra, $method)
+    {
+        $query = $this->newQuery();
+
+        if (! $this->exists) {
+            return $query->{$method}($column, $amount, $extra);
+        }
+
+        $this->incrementOrDecrementAttributeValue($column, $amount, $extra, $method);
+
+        // ***[ fix increment/decrement bug]***
+        if ($valuator = $this->getAttributeValuator($column)) {
+            $amount = forward_static_call([$valuator, 'toStorableValue'], $amount);
+        }
+
+        return $query->where(
+            $this->getKeyName(), $this->getKey()
+        )->{$method}($column, $amount, $extra);
+    }
+
+    /**
      * Override HasAttributes::attributesToArray.
      *
      * @return array
