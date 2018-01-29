@@ -193,17 +193,18 @@ trait HasRevaluableAttributes
     /**
      * Run the increment or decrement method on the model.
      *
-     * @param  string  $column
-     * @param  int  $amount
-     * @param  array  $extra
-     * @param  string  $method
+     * @param string $column
+     * @param int    $amount
+     * @param array  $extra
+     * @param string $method
+     *
      * @return int
      */
     protected function incrementOrDecrement($column, $amount, $extra, $method)
     {
         $query = $this->newQuery();
 
-        if (! $this->exists) {
+        if (!$this->exists) {
             return $query->{$method}($column, $amount, $extra);
         }
 
