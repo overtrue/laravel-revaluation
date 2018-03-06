@@ -44,7 +44,7 @@ trait HasRevaluableAttributes
      *
      * @param string $attribute
      *
-     * @return \Overtrue\LaravelRevaluation\Revaluable
+     * @return \Overtrue\LaravelRevaluation\Revaluable|bool
      */
     public function getRevaluatedAttribute($attribute)
     {
@@ -98,16 +98,6 @@ trait HasRevaluableAttributes
     }
 
     /**
-     * Return the additional attribute revaluate mutators.
-     *
-     * @return array
-     */
-    public function getRevaluateMutators()
-    {
-        return property_exists($this, 'revaluateMutators') ? (array) $this->revaluateMutators : [];
-    }
-
-    /**
      * @return string
      */
     public function getRevaluableAttributePrefix()
@@ -146,28 +136,6 @@ trait HasRevaluableAttributes
 
         if ($valuator = $this->getRevaluatedAttribute($attribute)) {
             return $valuator->toDefaultFormat();
-        }
-
-        /**
-         * <pre>
-         * $revaluateMutators = [
-         *     'display_price' => ['price', 'asCurrency'],
-         * ];
-         * </pre>.
-         *
-         * @var array
-         */
-        $revaluateMutators = $this->getRevaluateMutators();
-
-        if (isset($revaluateMutators[$attribute])) {
-            list($sourceAttribute, $method) = $revaluateMutators[$attribute];
-            $revaluated = $this->getRevaluatedAttribute($sourceAttribute);
-
-            if (!is_callable([$revaluated, $method])) {
-                throw new \Exception("$method not an callable method.");
-            }
-
-            return call_user_func([$revaluated, $method]);
         }
 
         return parent::getAttribute($attribute);
