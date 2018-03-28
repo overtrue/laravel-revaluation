@@ -44,7 +44,7 @@ trait HasRevaluableAttributes
      *
      * @param string $attribute
      *
-     * @return \Overtrue\LaravelRevaluation\Revaluable|bool
+     * @return \Overtrue\LaravelRevaluation\Revaluable
      */
     public function getRevaluatedAttribute($attribute)
     {
@@ -129,7 +129,6 @@ trait HasRevaluableAttributes
         }
 
         $prefix = $this->getRevaluableAttributePrefix();
-
         if (starts_with($attribute, $prefix)) {
             return $this->getRevaluatedAttribute(substr($attribute, strlen($prefix) + 1));
         }
@@ -255,7 +254,7 @@ trait HasRevaluableAttributes
      */
     protected function shouldReplaceRawAttributesToArray()
     {
-        return property_exists($this, 'replaceRawAttributesToArray') ? $this->replaceRawAttributesToArray : false;
+        return property_exists($this, 'replaceRawAttributesToArray') ? $this->replaceRawAttributesToArray : true;
     }
 
     /**
