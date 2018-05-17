@@ -14,7 +14,7 @@ return [
 
     'options' => [
         'rmb' => [
-            'pricision' => 2,
+            'precision' => 2,
             'currency_format' => '￥%i',
         ],
     ],

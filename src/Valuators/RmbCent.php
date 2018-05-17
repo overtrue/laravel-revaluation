@@ -23,7 +23,9 @@ class RmbCent extends Valuator
 
     public function inYuan()
     {
-        return round($this->value / 100, config('revaluation.options.rmb.pricision'));
+        $precision = config('revaluation.options.rmb.precision',  config('revaluation.options.rmb.pricision'));
+
+        return number_format(round($this->value / 100, $precision), $precision, '.', '');
     }
 
     public function asCurrency($format = null)
