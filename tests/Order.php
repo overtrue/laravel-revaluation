@@ -23,6 +23,8 @@ class Order extends Model
 {
     use HasRevaluableAttributes;
 
+    protected $replaceRawAttributesToArray = false;
+
     protected $table = 'orders';
 
     protected $fillable = [
