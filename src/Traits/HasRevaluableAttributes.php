@@ -48,7 +48,7 @@ trait HasRevaluableAttributes
      */
     public function getRevaluatedAttribute($attribute)
     {
-        $attribute = snake_case($attribute);
+        $attribute = \Illuminate\Support\Str::snake($attribute);
 
         if ($valuator = $this->getAttributeValuator($attribute)) {
             return new $valuator(parent::getAttribute($attribute), $attribute, $this);
@@ -124,12 +124,12 @@ trait HasRevaluableAttributes
             return parent::getAttribute($attribute);
         }
 
-        if (starts_with($attribute, 'raw_')) {
+        if (\Illuminate\Support\Str::startsWith($attribute, 'raw_')) {
             return $this->getRevaluatedAttribute(substr($attribute, strlen('raw_')))->getRaw();
         }
 
         $prefix = $this->getRevaluableAttributePrefix();
-        if (starts_with($attribute, $prefix)) {
+        if (\Illuminate\Support\Str::startsWith($attribute, $prefix)) {
             return $this->getRevaluatedAttribute(substr($attribute, strlen($prefix) + 1));
         }
 
@@ -233,7 +233,7 @@ trait HasRevaluableAttributes
      */
     public function __call($method, $args)
     {
-        $prefix = studly_case($this->getRevaluableAttributePrefix());
+        $prefix = \Illuminate\Support\Str::studly($this->getRevaluableAttributePrefix());
         if (preg_match("/get{$prefix}(?<attribute>\\w+)Attribute/i", $method, $matches)) {
             return $this->getRevaluatedAttribute($matches['attribute']);
         }
@@ -284,6 +284,6 @@ trait HasRevaluableAttributes
      */
     protected function getAttributeValuator($attribute)
     {
-        return array_get($this->getRevaluableAttributes(), $attribute);
+        return \Illuminate\Support\Arr::get($this->getRevaluableAttributes(), $attribute);
     }
 }
