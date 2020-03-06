@@ -183,7 +183,8 @@ trait HasRevaluableAttributes
         }
 
         return $query->where(
-            $this->getKeyName(), $this->getKey()
+            $this->getKeyName(),
+            $this->getKey()
         )->{$method}($column, $amount, $extra);
     }
 
